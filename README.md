@@ -1,4 +1,4 @@
-# TeamViewerDecrypt
+# TeamViewerDecrypt - Powershell
 
 Just a quick dirty Powershell implementation of [whynotsecurity](https://github.com/whynotsecurity/)´s Teamviewer decrypt script.
 
