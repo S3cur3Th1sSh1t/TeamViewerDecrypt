@@ -1,10 +1,10 @@
 function TeamviewerDecrypt
 {
     Write-Host "Looking for Registry entries on this system:"
-    if ((Test-Path 'HKCU:\SOFTWARE\Teamviewer\') -Or (Test-Path 'HKLM\SOFTWARE\WOW6432Node\TeamViewer') -Or (Test-Path 'HKLM\SOFTWARE\TeamViewer'))
+    if ((Test-Path Registry::'HKCU:\SOFTWARE\Teamviewer\') -Or (Test-Path Registry::'HKLM\SOFTWARE\WOW6432Node\TeamViewer') -Or (Test-Path Registry::'HKLM\SOFTWARE\TeamViewer'))
     {
         $success = $false
-        if (Test-Path 'HKCU:\SOFTWARE\Teamviewer\')
+        if (Test-Path Registry::'HKCU:\SOFTWARE\Teamviewer\')
         {
             $TeamviewerDir = Get-ItemProperty Registry::HKCU\Software\Teamviewer\
             if ($TeamviewerDir.SecurityPasswordAES)
@@ -32,7 +32,7 @@ function TeamviewerDecrypt
                 $success = $true
             }
         }
-        elseif (Test-Path 'HKLM\SOFTWARE\WOW6432Node\TeamViewer')
+        elseif (Test-Path Registry::'HKLM\SOFTWARE\WOW6432Node\TeamViewer')
         {
             $TeamviewerDir = Get-ItemProperty Registry::HKLM\SOFTWARE\WOW6432Node\TeamViewer
             if ($TeamviewerDir.SecurityPasswordAES)
