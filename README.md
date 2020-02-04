@@ -6,6 +6,8 @@ All credit goes to him, blog post can be found here: https://whynotsecurity.com/
 
 Not all passwords in every version can be decrypted using this script. I could not decrypt Teamviewer v14/v15 PermanentPasswords so far.
 
+It worked for me for SecurityPasswordAES in Versions 7 and 8.
+
 Usage as simple as:
 
 ```
